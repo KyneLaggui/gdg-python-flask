@@ -1,10 +1,9 @@
 # Flask Project
 
 ### Learning objectives:
-- Learn how to use firebase
-- Learn how to use firebase auth
-- Integrate firebase in flask
-- Learn session management
+- Learn how to use SQLite
+- Learn how to query database
+- Integrate SQLite in Flask
 
 ### Instructions
 
@@ -21,12 +20,19 @@
     pip install -r requirement.txt
     ```
 
-4. Follow the youtube tutorial referenced below.
-5. Open `app.py` and write the one-line codes for `TODO 1-4`.
+4. Download [sqlitebrowser](https://sqlitebrowser.org/). Open `user.db` in this folder to see the database schema we cooked 🔥 You will use the column names to complete the TODOs.
 
-### Reference
+5. Once you are familiar with the schema, checkout how to execute SQL commands:
+    - SELECT
+    - UPDATE
+    - DELETE
+    - INSERT
 
-1. Follow the step-by-step instructions by clicking the link below:  
-    - [YouTube](https://www.youtube.com/watch?v=HltzFtn9f1c)
-2. If you are not a fan of videos, visit the pyrebase4 docs instead:
-    - [pyrebase4](https://github.com/nhorvath/Pyrebase4)
+    Check out this short [youtube video](https://www.youtube.com/watch?v=0AuQBhafq98) 😎
+
+6. You are now ready to solve this challenge! Open `app.py` and look for comments with `#TODO`s. Have fun!
+
+### References
+
+- Massive shoutout to MohammadReza Keikavousi for [fakestoreapi](https://fakestoreapi.com/)
+- Checkout cs50 python library especially [SQL](https://cs50.readthedocs.io/libraries/cs50/python/)

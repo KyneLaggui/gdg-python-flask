@@ -3,6 +3,7 @@
 <div class="flex justify-center">
     <form action="{% block form_action %}{% endblock %}" method="POST" class="bg-orange-300 p-5 rounded">
         <legend class="font-bold">{% block form_legend %}{% endblock %}</legend>
+        {% block form_additional_param %}{% endblock %}
         <div class="flex flex-col mb-3">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" class="border rounded px-2" placeholder="name@email.com" required>
