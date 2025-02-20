@@ -1,22 +1,17 @@
+# Oh no! This site is broken. 
+# Look for TODO comments and fill the 
+# underline placeholders with the correct code
+
 import requests
 from flask import Flask, session, render_template, request, redirect, url_for
-import pyrebase
+from cs50 import SQL
+import bcrypt
+import base64
+import hashlib
 
-# TODO 1: add your firebase project config
-# Follow the youtube tutorial linked in the `README.md`
-config = {
-    'apiKey': "",
-    'authDomain': "",
-    'projectId': "",
-    'storageBucket': "",
-    'messagingSenderId': "",
-    'appId': "",
-    'measurementId': "",
-    'databaseURL': ''
-}
-
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
+# TODO 1: initialize SQLite for this app with the db name of user.db
+# Follow the 'https://cs50.readthedocs.io/libraries/cs50/python/' docs and look for sqlite `SQL` method
+# db = SQL("sqlite:///___")
 
 app = Flask(__name__)
 # TODO 2: generate a strong secret key
@@ -24,7 +19,7 @@ app = Flask(__name__)
 # python -c 'import secrets; print(secrets.token_hex())'
 # Place the output as the value for app.secret_key
 # We need the secret key to make our server-side session secure
-app.secret_key = 'your_secret_key'
+app.secret_key = '___'
 
 @app.route('/')
 def home():
@@ -48,10 +43,18 @@ def login():
             return "Missing email or password", 400 
         
         try:
-            # TODO 3: sign in user using pyrebase and name the variable as 'user'
+            # TODO 3: use db.execute to get the user record referencing user's email, name this variable as user
+            # user = db.execute("SELECT * FROM ____ WHERE ___=?", ____)
+            
+            if len(user) != 1:
+                return 'Invalid email', 400
 
-            # set user session  
-            session['user'] = user['email']
+            # Use bcrypt to check the password hash
+            if bcrypt.checkpw(base64.b64encode(hashlib.sha256(password.encode('utf-8')).digest()), user[0]['password']):
+                # set user session  
+                session['user'] = {'email': user[0]['email'], 'username': user[0]['username']}
+            else:
+                return 'Invalid password', 400
             
             return redirect(url_for('home'))
         
@@ -68,15 +71,26 @@ def signup():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        username = request.form.get('username')
 
-        if not email or not password:
-            return "Missing email or password", 400 
+        if not email or not password or not username:
+            return "Missing email, username, or password", 400 
         
         try:
-            # TODO 4: create user using pyrebase and name the variable as 'user'
+            # TODO 4: use db.execute to get the user record referencing user's email, name this variable as user
+            # user = db.execute('SELECT * FROM ___ WHERE ____=? ', __)
+            
+            if user:
+                return 'Email already exists', 400
+            
+            # Hash the password and store it in database
+            hash = bcrypt.hashpw(base64.b64encode(hashlib.sha256(password.encode('utf-8')).digest()), bcrypt.gensalt())
+
+            # TODO 5: insert the email and hash to the database
+            # db.execute('INSERT INTO __(__, ___, __) VALUES(?, ?, ?)', ___, __, ___)
 
             # add user to session
-            session['user'] = user['email']
+            session['user'] = {'email': email, 'username': username}
 
             return redirect(url_for('home'))
 
@@ -84,6 +98,56 @@ def signup():
             return 'Failed to signup', 500
         
     return render_template('signup.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
+
+@app.route('/change-username', methods=['POST'])
+def update_username():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    username = request.form.get('username')
+
+    if not username:
+        return 'Failed change name', 400
+    
+    # TODO 6: update the username
+    # db.execute('UPDATE ___ SET _____=? WHERE _____=?', ______, session['user']['email'])
+    session['user']['username'] = username
+    session.modified = True
+
+    return redirect(url_for('settings'))
+
+
+@app.route('/change-password', methods=['POST'])
+def update_password():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    password = request.form.get('password')
+
+    if not password:
+        return 'Failed change password', 400
+    
+    hash = bcrypt.hashpw(base64.b64encode(hashlib.sha256(password.encode('utf-8')).digest()), bcrypt.gensalt())
+    # TODO 7: update the password
+    # db.execute('UPDATE ___ SET _____=? WHERE _____=?', _____, session['user']['email'])
+
+    return redirect(url_for('settings'))
+
+
+@app.route('/delete-account', methods=['POST'])
+def delete_account():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    # TODO 8: update the username
+    # db.execute('DELETE FROM _____ WHERE ____=?', session['user']['email'])
+    session.pop('user', None)
+    return redirect(url_for('login'))
 
 @app.route('/logout', methods=['POST'])
 def logout():
