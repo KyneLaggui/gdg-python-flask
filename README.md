@@ -98,6 +98,25 @@ By default, Flask will run on `http://127.0.0.1:5000/`. Open this URL in your br
 
 ---
 
+## 🚀 Project Assignment: CRUD E-commerce
+
+## Project Overview
+
+The e-commerce application is incomplete. Fill the necessary SQL code to complete the application. 
+
+### Key Development Steps
+
+1. Read the `README.md` file inside `/FlaskProject`.
+2. With your `pip` knowledge, install the required dependencies.
+3. Open `/FlaskProject/app.py` and read all the comments. 
+4. The app would not work properly unless you provide the correct SQL code.
+
+### Skills Practiced
+
+- **SQL**: Learn how to use SQL to interact with a SQLite database.
+- **HTML**: Understand built-in HTML syntax for form submissions, such as passwords, emails, and text fields.
+- **Python Libraries**: Integrate new libraries other than Flask.
+
 ## 📤 Submission
 
 - Follow the instructions in each assignment folder and complete the exercises.
