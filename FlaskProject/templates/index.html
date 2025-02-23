@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block nav_options %}
+<form action="{{ url_for('logout') }}" method="POST">
+    <button class="bg-orange-300 px-4 py-1 rounded hover:bg-orange-400 cursor-pointer hover:text-white">
+        Logout
+    </button>
+</form>
+{% endblock %}
+{% block content %}
+<div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    {% for item in fake_store %}
+    <div id="{{ item['id'] }}" class="bg-neutral-200 p-4 grid grid-rows-[1fr_auto] rounded">
+        <div>
+            <img src="{{ item['image'] }}" alt="{{ item['title'] }}">
+            <p>{{ item['title'] }}</p>
+            <p>rating: {{ item['rating']['rate'] }}</p>
+            <p>₱{{ item['price'] }}</p>
+        </div>
+        
+        <div class="flex justify-end">
+            <button class="bg-orange-400 rounded px-2 py-1 cursor-pointer hover:bg-orange-500">Buy now!</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
