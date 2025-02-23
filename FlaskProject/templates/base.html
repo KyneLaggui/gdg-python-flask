@@ -9,7 +9,7 @@
 <body>
     <header>
         <nav class="flex justify-between px-2 py-4 items-center">
-            <h2 class="font-bold text-xl">Shopi</h2>
+            <a href="{{ url_for('home') }}"><h2 class="font-bold text-xl">Shopi</h2></a>
             {% block nav_options %}
             {% endblock %}
         </nav>
@@ -46,5 +46,7 @@
             </div>
         </div>
     </footer>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>
